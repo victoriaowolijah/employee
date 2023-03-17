@@ -1,5 +1,5 @@
 import React,  { useEffect, useState} from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const EmpCreate = () => {
@@ -8,14 +8,36 @@ const EmpCreate = () => {
     const[email, emailchange]=useState("");
     const[phone, phonechange]=useState("");
     const[active, activechange]=useState(true);
+    const navigate=useNavigate();
+
+    const handlesubmit=(e)=> {
+        e.preventDefault();
+        const empdata={name,email,phone,active};
+        
+
+        fetch("http://localhost:8000/employee",{
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify(empdata)
+
+        }).then((res)=>{
+            alert('Saved successfully.')
+            navigate('/')
+
+        }).catch((err)=>{
+            console.log(err.message)
+
+        })
+
+    }
 
   return (
     <div>
       <div className='row'>
         <div className='offset-lg-3 col-lg-6'>
-            <div className='container'>
+            <form className='container' onSubmit={handlesubmit}>
 
-                <div className='card' style={{"text-align":"left"}}>
+                <div className='card' style={{"textAlign":"left"}}>
                     <div className='card-title'>
                         <h2>Employee Create</h2>
                     </div>
@@ -33,7 +55,7 @@ const EmpCreate = () => {
                             <div className='col-lg-12'>
                                 <div className='form-group'>
                                     <label>Name</label>
-                                    <input className='form-control'></input>
+                                    <input required value={name} onChange={e=>namechange(e.target.value)} className='form-control'></input>
 
                                 </div>
                             </div>
@@ -41,21 +63,21 @@ const EmpCreate = () => {
                             <div className='col-lg-12'>
                                 <div className='form-group'>
                                     <label>email</label>
-                                    <input className='form-control'></input>
+                                    <input value={email} onChange={e=>emailchange(e.target.value)} className='form-control'></input>
 
                                 </div>
                             </div>
                             <div className='col-lg-12'>
                                 <div className='form-group'>
                                     <label>Phone</label>
-                                    <input className='form-control'></input>
+                                    <input value={phone} onChange={e=>phonechange(e.target.value)} className='form-control'></input>
 
                                 </div>
                             </div>
 
                             <div className='col-lg-12'>
                                 <div className='form-check'>
-                                <input type='checkbox' className='form-check-input'></input>
+                                <input value={active} onChange={e=>activechange(e.target.checked)} type='checkbox' className='form-check-input'></input>
                                     <label className='form-check-label'>Is Active</label>
 
                                 </div>
@@ -73,7 +95,7 @@ const EmpCreate = () => {
 
                 </div>
 
-            </div>
+            </form>
 
         </div>
 

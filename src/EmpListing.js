@@ -40,6 +40,7 @@ const EmpListing = () => {
                         {empdata &&
                             empdata.map(item=>(
                                 <tr key={item.id}>
+                                    <td>{item.id}</td>
                                     <td>{item.name}</td>
                                     <td>{item.email}</td>
                                     <td>{item.phone}</td>
