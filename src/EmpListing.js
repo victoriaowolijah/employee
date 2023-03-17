@@ -1,9 +1,35 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const EmpListing = () => {
     const [empdata, empdatachange]=useState(null);
+    const navigate=useNavigate();
+
+    const LoadDetail=(id)=>{
+        navigate('employee/detail/'+id)
+
+    } 
+    const LoadEdit=(id)=>{
+        navigate('employee/edit/'+id)
+
+    } 
+    const RemoveFunction=(id)=>{
+        if (window.confirm('Are you sure you want to remove this employee?')){
+            fetch("http://localhost:8000/employee/" + id,{
+                method: 'DELETE',
+            }).then((resp) => {
+                alert('Removed successfuly');
+                window.location.reload();
+            }).catch((err) => {
+                console.log(err.message);
+            })
+
+        }
+        
+    } 
+
+
     useEffect(() => {
         fetch("http://localhost:8000/employee").then((res) => {
             return res.json();
@@ -45,9 +71,9 @@ const EmpListing = () => {
                                     <td>{item.email}</td>
                                     <td>{item.phone}</td>
                                     <td>
-                                        <a className='btn btn-success'>Edit</a>
-                                        <a className='btn btn-danger'>Remove</a>
-                                        <a className='btn btn-primary'>Detail</a>
+                                        <a onClick={()=>{LoadEdit(item.id)}} className='btn btn-success'>Edit</a>
+                                        <a onClick={()=>{RemoveFunction(item.id)}} className='btn btn-danger'>Remove</a>
+                                        <a onClick={()=>{LoadDetail(item.id)}} className='btn btn-primary'>Detail</a>
                                     </td>
 
                                 </tr>

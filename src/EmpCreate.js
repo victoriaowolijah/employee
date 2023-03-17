@@ -1,4 +1,4 @@
-import React,  { useEffect, useState} from 'react'
+import React,  { useState} from 'react'
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -8,6 +8,9 @@ const EmpCreate = () => {
     const[email, emailchange]=useState("");
     const[phone, phonechange]=useState("");
     const[active, activechange]=useState(true);
+    const[validation, valchange]=useState(false);
+
+    
     const navigate=useNavigate();
 
     const handlesubmit=(e)=> {
@@ -55,14 +58,15 @@ const EmpCreate = () => {
                             <div className='col-lg-12'>
                                 <div className='form-group'>
                                     <label>Name</label>
-                                    <input required value={name} onChange={e=>namechange(e.target.value)} className='form-control'></input>
+                                    <input required value={name} onMouseDown={e=>valchange(true)} onChange={e=>namechange(e.target.value)} className='form-control'></input>
+                                    {name.length==0 && validation && <span className="text-danger">Enter the name</span>}
 
                                 </div>
                             </div>
 
                             <div className='col-lg-12'>
                                 <div className='form-group'>
-                                    <label>email</label>
+                                    <label>Email</label>
                                     <input value={email} onChange={e=>emailchange(e.target.value)} className='form-control'></input>
 
                                 </div>
@@ -77,7 +81,7 @@ const EmpCreate = () => {
 
                             <div className='col-lg-12'>
                                 <div className='form-check'>
-                                <input value={active} onChange={e=>activechange(e.target.checked)} type='checkbox' className='form-check-input'></input>
+                                <input checked={active}  value={active} onChange={e=>activechange(e.target.checked)} type='checkbox' className='form-check-input'></input>
                                     <label className='form-check-label'>Is Active</label>
 
                                 </div>
